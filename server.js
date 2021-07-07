@@ -24,16 +24,31 @@ app.get('/quotes', (request, response) => {
 });
 
 app.get('/quotes/random', (request, response) => {
-  const randomNumber = Match.floor(Math.random() * quotes.length)
+  const randomNumber = Math.floor(Math.random() * quotes.length)
   const randomQuote = quotes[randomNumber];
   response.send(randomQuote)
 });
 
 app.get('/quotes/search', (request, response) => {
+
   let query = request.query.term.toLowerCase();
+
    const filteredQueryArray = quotes.filter(el => el.quote.includes(query))
-   response.send(filteredQueryArray)
+  
+
+   if(filteredQueryArray.length == 0){
+    console.log(` Query without first word ${query.slice(1)}`)
+    console.log(` Query with first character in Upper case ${query.charAt(0).toUpperCase()}`)
+    console.log(` Sum of the previous ${query.charAt(0).toUpperCase()+query.slice(1)}`)
+    const filteredQueryArray2 = quotes.filter(el => el.quote.includes(query.charAt(0).toUpperCase() + query.slice(1)))
+    response.send(filteredQueryArray2)
+   }else{
+    response.send(filteredQueryArray)
+   }
+//http://localhost:5000/quotes/search?term= halfway there
 });
+
+
 
 //...END OF YOUR CODE
 
